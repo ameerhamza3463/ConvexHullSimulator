@@ -1,0 +1,11 @@
+.dd1 {
+    border: 1px solid black;
+    height: max-content;
+}
+
+.card-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 11rem;
+}
