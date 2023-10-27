@@ -3,53 +3,62 @@
 
 {% block ExtraHeaders %}
   <link href="{% static 'CHS_App/main.css' %}" rel="stylesheet" />
+  {% comment %} <script src="static/CHS_App/{{algorithm}}.js"></script> {% endcomment %}
+{% comment %} <script src="{% static 'CHS_App/brute_force.js' %}"></script> {% endcomment %}
+<script src="{% static 'CHS_App/' %}{{ algorithm }}.js"></script>
+
 {% endblock %}
 
+{% block title %}
+    CHS - {{ algorithm }}
+{% endblock title %}
+
+
 {% block body %}
-  <div class="container-fluid p-3 d-flex flex-wrap justify-content-center align-items-center dd1">
+  {% comment %} <div class="container-fluid p-3 d-flex flex-wrap justify-content-center align-items-center dd1">
     <div class="row justify-content-evenly col-12 mt-3">
       <div class="card mx-3 my-2" style="width: 18rem; min-width: 18rem;">
         <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-primary border-4">BF</div>
         <div class="card-body">
           <h5 class="card-title fw-normal fs-4">Brute Force</h5>
           <p class="card-text fs-6">Process scheduling is how the CPU chooses which process to run next. It is essential for efficient and fair utilization of the CPU in a multi-tasking environment.</p>
-          <a href="{% url 'CHS_App:algorithm' 'brute_force' %}"><button type="button" class="btn btn-outline-primary offset-1 col-10">Explore</button></a>
+          <a href="#"><button type="button" class="btn btn-outline-primary offset-1 col-10">Explore</button></a>
         </div>
       </div>
       <div class="card mx-3 my-2" style="width: 18rem; min-width: 18rem;">
-        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-secondary border-4">JM</div>
+        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-primary border-4">BF</div>
         <div class="card-body">
-          <h5 class="card-title fw-normal fs-4">Jarvis March</h5>
+          <h5 class="card-title fw-normal fs-4">Brute Force</h5>
           <p class="card-text fs-6">Process scheduling is how the CPU chooses which process to run next. It is essential for efficient and fair utilization of the CPU in a multi-tasking environment.</p>
-          <a href="{% url 'CHS_App:algorithm' 'jarvis_march' %}"><button type="button" class="btn btn-outline-secondary offset-1 col-10">Explore</button></a>
+          <a href="#"><button type="button" class="btn btn-outline-primary offset-1 col-10">Explore</button></a>
         </div>
       </div>
       <div class="card mx-3 my-2" style="width: 18rem; min-width: 18rem;">
-        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-success border-4">GS</div>
+        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-primary border-4">BF</div>
         <div class="card-body">
-          <h5 class="card-title fw-normal fs-4">Gram Scan</h5>
+          <h5 class="card-title fw-normal fs-4">Brute Force</h5>
           <p class="card-text fs-6">Process scheduling is how the CPU chooses which process to run next. It is essential for efficient and fair utilization of the CPU in a multi-tasking environment.</p>
-          <a href="{% url 'CHS_App:algorithm' 'gram_scan' %}"><button type="button" class="btn btn-outline-success offset-1 col-10">Explore</button></a>
+          <a href="#"><button type="button" class="btn btn-outline-primary offset-1 col-10">Explore</button></a>
         </div>
       </div>
     </div>
     <div class="row justify-content-evenly col-12 mt-3">
       <div class="card mx-3 my-2" style="width: 18rem; min-width: 18rem;">
-        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-danger border-4">QH</div>
+        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-primary border-4">BF</div>
         <div class="card-body">
-          <h5 class="card-title fw-normal fs-4">Quick Hull</h5>
+          <h5 class="card-title fw-normal fs-4">Brute Force</h5>
           <p class="card-text fs-6">Process scheduling is how the CPU chooses which process to run next. It is essential for efficient and fair utilization of the CPU in a multi-tasking environment.</p>
-          <a href="{% url 'CHS_App:algorithm' 'quick_hull' %}"><button type="button" class="btn btn-outline-danger offset-1 col-10">Explore</button></a>
+          <a href="#"><button type="button" class="btn btn-outline-primary offset-1 col-10">Explore</button></a>
         </div>
       </div>
       <div class="card mx-3 my-2" style="width: 18rem; min-width: 18rem;">
-        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-warning border-4">RP</div>
+        <div style="font-size: 4rem;" class="fw-light card-head border-bottom border-primary border-4">BF</div>
         <div class="card-body">
-          <h5 class="card-title fw-normal fs-4">Research Paper</h5>
+          <h5 class="card-title fw-normal fs-4">Brute Force</h5>
           <p class="card-text fs-6">Process scheduling is how the CPU chooses which process to run next. It is essential for efficient and fair utilization of the CPU in a multi-tasking environment.</p>
-          <a href="{% url 'CHS_App:algorithm' 'research_paper' %}"><button type="button" class="btn btn-outline-warning offset-1 col-10">Explore</button></a>
+          <a href="#"><button type="button" class="btn btn-outline-primary offset-1 col-10">Explore</button></a>
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 {% endblock %}
