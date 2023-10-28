@@ -21,3 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('CHS_App.urls')),
 ]
+
+handler404 = 'CHS_App.views.page_not_found_404'

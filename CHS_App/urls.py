@@ -10,5 +10,4 @@ urlpatterns = [
         views.algorithm,
         name="algorithm",
     ),
-    path('page404/', views.page_not_found_404, name="page_not_found_404"),
 ]
