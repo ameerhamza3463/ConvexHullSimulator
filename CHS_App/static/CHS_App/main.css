@@ -61,5 +61,6 @@ input {
 
 .algo-div {
     height: 40rem;
-    border: 1px solid black;
+    border-radius: 6px;
+    border: 1px solid lightgray;
 }
