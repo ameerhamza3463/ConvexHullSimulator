@@ -108,3 +108,13 @@ function loadCoordinates() {
         tbody.appendChild(newRow);
     }
 }
+function clearDataset() {
+    const coordinates = JSON.parse(localStorage.getItem("coordinates")) || [];
+    if (coordinates.length !== 0) {
+        localStorage.removeItem("coordinates");
+        // Reload the page to update the dataset
+        location.reload();
+    } else {
+        alert("Can't you see there is no data here ( ￣へ￣) Baka ja neo");
+    }
+}

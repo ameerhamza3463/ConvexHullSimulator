@@ -16,7 +16,10 @@
     <div class="fs-4">
       Algorithm Name: <span class="text-{{ colorScheme }}">{{ algorithmTitle }}</span>
     </div>
-    <button type="button" class="btn btn-outline-{{ colorScheme }}">Run Algorithm 🚀</button>
+    <div>
+      <button type="button" class="btn btn-outline-{{ colorScheme }}">Run Algorithm 🚀</button>
+      <button type="button" class="btn btn-outline-dark" onclick="clearDataset()">Clear Dataset 🗑️</button>
+    </div>
   </div>
   <div class="container-fluid algo-container">
     <div class="d-flex justify-content-between align-items-center">
