@@ -19,21 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const addPointBtn = document.querySelector("#addCoordiantes");
     addPointBtn.addEventListener("click", () => { addCoordinates() })
 
-
-
+    loadCoordinates();
 
     const tbody = document.querySelector('#tbody');
-    // Add a click event listener to the table body to handle "x" button clicks
     tbody.addEventListener("click", (event) => {
-        if (event.target.classList.contains("bi-x-lg")) {
-            // Find the closest row and remove it
-            const row = event.target.closest("tr");
-            if (row) {
-                row.remove();
-                FixCoordinateNumbering()
-            }
+        if (event.target.classList.contains("remove-btn")) {
+            removeCoordinate(event.target);
         }
     });
+
 })
 
 function addCoordinates() {
@@ -46,6 +40,18 @@ function addCoordinates() {
     // Check if the inputs are valid numbers
     if (!isNaN(x) && !isNaN(y)) {
         // You can use x and y here as needed
+        const coordinates = JSON.parse(localStorage.getItem("coordinates")) || [];
+
+        // Check if the coordinates already exist
+        if (coordinates.some(coord => coord.x === x && coord.y === y)) {
+            alert("Coordinates already exist! ...(*￣０￣)ノ");
+            return;
+        }
+
+        coordinates.push({ x, y });
+        localStorage.setItem("coordinates", JSON.stringify(coordinates));
+
+        // You can use x and y here as needed
         console.log("X: " + x + ", Y: " + y);
 
         // Get the table body then make a new row with 
@@ -56,7 +62,7 @@ function addCoordinates() {
                             <th scope="row">${tbody.childElementCount + 1}</th>
                             <td >${x}</td>
                             <td>${y}</td>
-                            <td><i class="bi bi-x-lg"></i></td>
+                            <td><i class="bi bi-x-lg remove-btn"></i></td>
                         `;
         tbody.appendChild(newRow);
         // Clear the input fields
@@ -67,13 +73,38 @@ function addCoordinates() {
     }
 }
 
-function FixCoordinateNumbering() {
-    const tbody = document.querySelector("#tbody");
-    const rows = tbody.querySelectorAll("tr");
+function removeCoordinate(button) {
+    const row = button.parentNode.parentNode;
+    const tbody = document.querySelector('#tbody');
+    const rowIndex = Array.from(tbody.children).indexOf(row);
+    const coordinates = JSON.parse(localStorage.getItem("coordinates")) || [];
 
-    rows.forEach((row, index) => {
-        // Update the row number
-        const rowNumber = index + 1;
-        row.querySelector("th").textContent = rowNumber;
-    });
+    if (rowIndex >= 0) {
+        tbody.removeChild(row);
+        coordinates.splice(rowIndex, 1);
+        localStorage.setItem("coordinates", JSON.stringify(coordinates));
+
+        // Update the row numbers after removal
+        const rows = tbody.querySelectorAll('tr');
+        rows.forEach((row, index) => {
+            row.children[0].textContent = index + 1;
+        });
+    }
+}
+
+function loadCoordinates() {
+    const tbody = document.querySelector('#tbody');
+    tbody.innerHTML = '';
+    const coordinates = JSON.parse(localStorage.getItem("coordinates")) || [];
+
+    for (const coord of coordinates) {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <th scope="row">${tbody.childElementCount + 1}</th>
+            <td>${coord.x}</td>
+            <td>${coord.y}</td>
+            <td><i class="bi bi-x-lg remove-btn"></i></td>
+        `;
+        tbody.appendChild(newRow);
+    }
 }
