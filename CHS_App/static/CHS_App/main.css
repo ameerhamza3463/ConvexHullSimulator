@@ -20,6 +20,12 @@
 .input-contaniner,
 .data-container {
     height: 20rem;
+    height: 25rem;
+    overflow: auto;
+}
+
+.input-contaniner {
+    height: max-content;
     overflow: auto;
 }
 
