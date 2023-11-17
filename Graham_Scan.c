@@ -69,6 +69,7 @@ void Graham_Scan(Point points[], int n) {
     hull[m++] = points[1];
     hull[m++] = points[2];
 
+    printf("m : %d\n", m);
     // Process the rest of the points to construct the convex hull
     for (int i = 3; i < n; i++) {
         // Remove points that create a clockwise turn
