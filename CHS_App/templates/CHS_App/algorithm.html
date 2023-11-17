@@ -5,7 +5,6 @@
   <link href="{% static 'CHS_App/main.css' %}" rel="stylesheet" />
   <script src="{% static 'CHS_App/' %}{{ algorithm }}.js"></script>
   <script src="{% static 'CHS_App/input.js' %}"></script>
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
 {% endblock %}
 
 {% block title %}
@@ -18,7 +17,7 @@
       Algorithm Name: <span class="text-{{ colorScheme }}">{{ algorithmTitle }}</span>
     </div>
     <div>
-      <button type="button" class="btn btn-outline-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button>
+      <button type="button" class="btn btn-outline-{{ colorScheme }}">Run Algorithm 🚀</button>
       <button type="button" class="btn btn-outline-dark" onclick="clearDataset()">Clear Dataset 🗑️</button>
     </div>
   </div>
@@ -52,6 +51,6 @@
       </div>
     </div>
 
-    <div id="graphs-div" class="algo-div col-12"></div>
+    <div class="algo-div col-12"></div>
   </div>
 {% endblock %}
