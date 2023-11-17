@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // FUNCTION TO CHECK COUNTER CLOCKWISE BETWEEN POINTS
 function checkCCW(p, q, r) {
     const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
@@ -189,3 +190,6 @@ function InputPoints() {
     }
     return coordinates;
 }
+=======
+console.log('jarvis march')
+>>>>>>> parent of ce50500 (Fuck hamza)

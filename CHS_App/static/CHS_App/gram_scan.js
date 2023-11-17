@@ -149,13 +149,17 @@ async function gram_scan() {
     //All three points put into stack insert them into selected and remove from unselected
     selectedVerticeX.push(points[1].x);
     selectedVerticeY.push(points[1].y);
+    unSelectedVerticeX.splice(0, 1);
+    unSelectedVerticeY.splice(0, 1);
+    //Draw checking graph which will draw points present in the stack
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
+    await drawCheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY);
     selectedVerticeX.push(points[2].x);
     selectedVerticeY.push(points[2].y);
     unSelectedVerticeX.splice(0, 1);
     unSelectedVerticeY.splice(0, 1);
-    unSelectedVerticeX.splice(0, 1);
-    unSelectedVerticeY.splice(0, 1);
     //Draw checking graph which will draw points present in the stack
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
     await drawCheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY);
     
     // Process the rest of the points to construct the convex hull
