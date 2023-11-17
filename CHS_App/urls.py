@@ -10,4 +10,9 @@ urlpatterns = [
         views.algorithm,
         name="algorithm",
     ),
+    path(
+        "line_intersection/<int:num>/",
+        views.line_intersection,
+        name="line_intersection",
+    ),
 ]

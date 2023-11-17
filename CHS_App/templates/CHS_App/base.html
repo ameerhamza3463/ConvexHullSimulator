@@ -14,7 +14,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{% static 'CHS_App/CHS Logo.png' %}" />
 
-    {% comment %}Personal{% endcomment %}
+    <!-- Personal -->
     <link href="{% static 'CHS_App/base.css' %}" rel="stylesheet" />
     {% block ExtraHeaders %}
 
@@ -38,19 +38,27 @@
           <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item me-3">
-                <a class="nav-link" href="{% url "CHS_App:main" %}">Home</a>
+                <a class="nav-link" href="{% url 'CHS_App:main' %}">Home</a>
               </li>
               <li class="nav-item me-3">
                 <div class="dropdown">
-                  <button class="allocation_dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Algorithms
-                  </button>
+                  <button class="allocation_dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Algorithms</button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url "CHS_App:algorithm" "brute_force" %}">Brute Force</a></li>
-                    <li><a class="dropdown-item" href="{% url "CHS_App:algorithm" "jarvis_march" %}">Jarvis March</a></li>
-                    <li><a class="dropdown-item" href="{% url "CHS_App:algorithm" "gram_scan" %}">Gram Scan</a></li>
-                    <li><a class="dropdown-item" href="{% url "CHS_App:algorithm" "quick_hull" %}">Quick Hull</a></li>
-                    <li><a class="dropdown-item" href="{% url "CHS_App:algorithm" "research_paper" %}">Research Paper</a></li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:algorithm' 'brute_force' %}">Brute Force</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:algorithm' 'jarvis_march' %}">Jarvis March</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:algorithm' 'gram_scan' %}">Gram Scan</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:algorithm' 'quick_hull' %}">Quick Hull</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:algorithm' 'research_paper' %}">Research Paper</a>
+                    </li>
                   </ul>
                 </div>
               </li>
