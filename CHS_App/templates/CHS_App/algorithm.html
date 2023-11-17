@@ -18,7 +18,7 @@
       Algorithm Name: <span class="text-{{ colorScheme }}">{{ algorithmTitle }}</span>
     </div>
     <div>
-      <a href="#graphs-div"><button type="button" class="btn btn-outline-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a>
+      <a href="#graphs-div"><button type="button" class="btn btn-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a>
       <button type="button" class="btn btn-outline-dark" onclick="clearDataset()">Clear Dataset 🗑️</button>
     </div>
   </div>
@@ -37,23 +37,32 @@
           </div>
           <button class="btn btn-{{ colorScheme }} mt-3 mb-3" id="addCoordiantes">Add Point 🌟</button>
         </div>
-        <div id="readFromFileView">IF</div>
+
+        <div id="readFromFileView">
+          <div class="fs-4 mb-4">Read From File</div>
+          <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
+            <div class="mx-1">Submit Your File</div>
+            <input type="file" id="fileInput" accept=".csv"/>
+          </div>
+          <button class="btn btn-{{ colorScheme }} mt-3 mb-3" onclick="readCoordinatesFromFile()">Read Coordinates 🌟</button>
+        </div>
+       
         <div id="randomView" class="mb-5">
           <div class="fs-4 mb-4">Random Coordinates</div>
           <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
             <div class="mx-1">Number of Points</div>
-            <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="random_number" id="numberOfRandomPoints" placeholder="3" />
+            <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="random_number" id="numberOfRandomPoints" placeholder="greater than or equal to 3" />
           </div>
-          <button class="btn btn-{{ colorScheme }} mt-3 mb-3" id="addRandomCoordiantes" onclick="addRandomCoordiantes()">Add Random Coordinates🌟</button>
+          <button class="btn btn-{{ colorScheme }} mt-3 mb-3" id="addRandomCoordiantes" onclick="addRandomCoordiantes()">Add Random Coordinates 🌟</button>
         </div>
         <div style="font-size: 0.7rem;">Input positive or negative number for x/y. You can also remove the coordinate by clicking on the cross in the table on the right side.</div>
         <div class="mt-4">
           <button class="btn btn-outline-{{ colorScheme }}" id="inputViewButton">Input Points</button>
-          <button class="btn btn-outline-{{ colorScheme }}" id="readFromFileViewButton">Read form file</button>
+          <button class="btn btn-outline-{{ colorScheme }}" id="readFromFileViewButton">Read from file</button>
           <button class="btn btn-outline-{{ colorScheme }}" id="randomViewButton">Random Points</button>
         </div>
       </div>
-      <div class="data-container col-6 my-2 px-5 pt-3 pb-1">
+      <div class="data-container col-12 col-lg-6 my-2 px-5 pt-3 pb-1">
         <table class="table">
           <thead>
             <tr>
@@ -67,6 +76,6 @@
         </table>
       </div>
     </div>
-    <div id="graphs-div" class="algo-div col-12"></div>
+    <div id="graphs-div" class="algo-div my-3 col-12"></div>
   </div>
 {% endblock %}

@@ -69,4 +69,5 @@ input {
     height: 40rem;
     border-radius: 6px;
     border: 1px solid lightgray;
+    overflow: hidden;
 }

@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    loadRandomView();
+    loadReadFromFileView();
 
     document.querySelector("#inputViewButton").addEventListener("click", () => {
         loadInputView();
@@ -167,5 +167,56 @@ function addRandomCoordiantes() {
 
     // Save the updated coordinates array to local storage
     localStorage.setItem("coordinates", JSON.stringify(coordinates));
+    loadCoordinates();
+}
+
+function readCoordinatesFromFile() {
+    const fileInput = document.getElementById('fileInput');
+
+    if (!fileInput.files.length) {
+        alert("Are you for real (ﾟДﾟ*)ﾉ");
+        return;
+    }
+
+    const file = fileInput.files[0];
+
+    // Check if the selected file has a .csv extension
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+        alert("Please select a valid CSV file, you smart boi (╯▔皿▔)╯ ");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        const contents = e.target.result;
+        processCSV(contents);
+    };
+
+    reader.readAsText(file);
+}
+function processCSV(contents) {
+    const lines = contents.split('\n');
+    const coordinates = new Set();
+
+    for (const line of lines) {
+        const [x, y] = line.split(',');
+
+        if (x !== undefined && y !== undefined && !isNaN(x) && !isNaN(y)) {
+            const point = { x: parseFloat(x), y: parseFloat(y) };
+
+            // Check if the point is already in the set
+            if (!coordinates.has(JSON.stringify(point))) {
+                coordinates.add(JSON.stringify(point));
+            }
+        }
+    }
+
+    const uniqueCoordinates = Array.from(coordinates).map(JSON.parse);
+
+    // Removing old points from local storage
+    localStorage.removeItem("coordinates");
+    // Save the updated coordinates array to local storage
+    localStorage.setItem("coordinates", JSON.stringify(uniqueCoordinates));
     loadCoordinates();
 }
