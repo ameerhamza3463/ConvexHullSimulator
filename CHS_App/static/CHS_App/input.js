@@ -28,6 +28,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    loadRandomView();
+
+    document.querySelector("#inputViewButton").addEventListener("click", () => {
+        loadInputView();
+    })
+    document.querySelector("#readFromFileViewButton").addEventListener("click", () => {
+        loadReadFromFileView();
+    })
+    document.querySelector("#randomViewButton").addEventListener("click", () => {
+        loadRandomView();
+    })
 })
 
 function addCoordinates() {
@@ -117,4 +128,60 @@ function clearDataset() {
     } else {
         alert("Can't you see there is no data here ( ￣へ￣) Baka ja neo");
     }
+}
+
+function loadInputView() {
+    document.querySelector("#inputView").style.display = 'block';
+    document.querySelector("#readFromFileView").style.display = 'none';
+    document.querySelector("#randomView").style.display = 'none';
+}
+function loadReadFromFileView() {
+    document.querySelector("#readFromFileView").style.display = 'block';
+    document.querySelector("#inputView").style.display = 'none';
+    document.querySelector("#randomView").style.display = 'none';
+}
+function loadRandomView() {
+    document.querySelector("#readFromFileView").style.display = 'none';
+    document.querySelector("#inputView").style.display = 'none';
+    document.querySelector("#randomView").style.display = 'block';
+}
+
+function addRandomCoordiantes() {
+    let numberOfRandomPoints = document.querySelector("#numberOfRandomPoints").value
+    if (numberOfRandomPoints === '' || isNaN(numberOfRandomPoints)) {
+        alert("No valid input for number of random coordinates  ￣へ￣");
+        return;
+    }
+    else if (numberOfRandomPoints < 0) {
+        alert("Not gonna use negative number （︶^︶）");
+        return;
+    }
+    else if (numberOfRandomPoints < 3) {
+        alert("Need at least 3 number of random coordinates (。_。)");
+        return;
+    }
+    else if (numberOfRandomPoints > 50) {
+        alert("Maximum 50 number of random coordinates plz ( •̀ ω •́ )y");
+        return;
+    }
+
+    let coordinates = JSON.parse(localStorage.getItem("coordinates")) || [];
+    if (coordinates.length !== 0) {
+        localStorage.removeItem("coordinates");
+    }
+    coordinates = [];
+    loadCoordinates();
+
+    for (let i = 0; i < numberOfRandomPoints; i++) {
+        // Generate random x and y coordinates as integers (positive or negative)
+        const randomX = Math.floor(Math.random() * 200) - 100; // Adjust the range as needed
+        const randomY = Math.floor(Math.random() * 200) - 100; // Adjust the range as needed
+
+        // Add the coordinates to the array
+        coordinates.push({ x: randomX, y: randomY });
+    }
+
+    // Save the updated coordinates array to local storage
+    localStorage.setItem("coordinates", JSON.stringify(coordinates));
+    loadCoordinates();
 }

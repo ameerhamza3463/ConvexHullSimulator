@@ -18,26 +18,46 @@
       Algorithm Name: <span class="text-{{ colorScheme }}">{{ algorithmTitle }}</span>
     </div>
     <div>
-      <button type="button" class="btn btn-outline-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button>
+      <a href="#graphs-div">
+        <button type="button" class="btn btn-outline-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button>
+      </a>
       <button type="button" class="btn btn-outline-dark" onclick="clearDataset()">Clear Dataset 🗑️</button>
     </div>
   </div>
+
   <div class="container-fluid algo-container">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="input-contaniner border border-2 border-{{ colorScheme }} rounded col-6 my-2 px-4 pt-4 pb-3">
-        <div class="fs-4 mb-4">Enter Points Coordinates</div>
-        <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
-          <div class="mx-1">X</div>
-          <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="x-coordinate" id="x-coordinate" placeholder="0" />
+    <div class="d-flex flex-wrap">
+      <div class="input-contaniner border border-2 border-{{ colorScheme }} rounded col-12 col-lg-6 my-2 px-4 pt-4 pb-3">
+        <div id="inputView">
+          <div class="fs-4 mb-4">Enter Points Coordinates</div>
+          <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
+            <div class="mx-1">X</div>
+            <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="x-coordinate" id="x-coordinate" placeholder="0" />
+          </div>
+          <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
+            <div class="mx-1">Y</div>
+            <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="y-coordinate" id="y-coordinate" placeholder="0" />
+          </div>
+          <button class="btn btn-{{ colorScheme }} mt-3 mb-3" id="addCoordiantes">Add Point 🌟</button>
         </div>
-        <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
-          <div class="mx-1">Y</div>
-          <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="y-coordinate" id="y-coordinate" placeholder="0" />
+        <div id="readFromFileView">IF</div>
+        <div id="randomView" class="mb-5">
+          <div class="fs-4 mb-4">Random Coordinates</div>
+          <div class="d-flex align-items-center col-12 fs-5 px-2 my-3">
+            <div class="mx-1">Number of Points</div>
+            <input type="number" class="col-10 col-md-9 col-lg-8 mx-3 px-2" name="random_number" id="numberOfRandomPoints" placeholder="3" />
+          </div>
+          <button class="btn btn-{{ colorScheme }} mt-3 mb-3" id="addRandomCoordiantes" onclick="addRandomCoordiantes()">Add Random Coordinates🌟</button>
         </div>
-        <button class="btn btn-{{ colorScheme }} mt-3 mb-3" id="addCoordiantes">Add Point 🌟</button>
         <div style="font-size: 0.7rem;">Input positive or negative number for x/y. You can also remove the coordinate by clicking on the cross in the table on the right side.</div>
+        <div class="mt-4">
+          <button class="btn btn-outline-{{ colorScheme }}" id="inputViewButton">Input Points</button>
+          <button class="btn btn-outline-{{ colorScheme }}" id="readFromFileViewButton">Read form file</button>
+          <button class="btn btn-outline-{{ colorScheme }}" id="randomViewButton">Random Points</button>
+        </div>
       </div>
-      <div class="data-container col-6 my-2 px-5 pt-3 pb-1">
+
+      <div class="data-container col-12 col-lg-6 my-2 px-5 pt-3 pb-1">
         <table class="table">
           <thead>
             <tr>
