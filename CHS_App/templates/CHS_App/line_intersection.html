@@ -3,8 +3,7 @@
 
 {% block ExtraHeaders %}
   <link href="{% static 'CHS_App/main.css' %}" rel="stylesheet" />
-  <script src="{% static 'CHS_App/' %}{{ algorithm }}.js"></script>
-  <script src="{% static 'CHS_App/line_intersection_input.js' %}"></script>
+  <script src="{% static 'CHS_App/line_intersection.js' %}"></script>
   <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
 {% endblock %}
 
@@ -13,14 +12,13 @@
 {% endblock %}
 
 {% block body %}
-  <div class="container-fluid d-flex justify-content-between my-3">
-    <div class="fs-4">
+  <div class="container-fluid d-flex justify-content-between flex-wrap my-3">
+    <div class="fs-4 my-3">
       Algorithm Name: <span class="text-{{ colorScheme }}">{{ algorithmTitle }}</span>
     </div>
-    <div>
-      <a><button type="button" class="btn btn-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a>
-      {% comment %} <a href="#graphs-div"><button type="button" class="btn btn-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a> {% endcomment %}
-      <button type="button" class="btn btn-outline-{{ colorScheme }}" onclick="random_lines()">Random Lines</button>
+    <div class="my-3 col-lg-4 col-12 justify-content-lg-evenly justify-content-start d-flex">
+      <a href="#graphs-div" class="mx-2"><button type="button" class="btn btn-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a>
+      <button type="button" class="btn btn-outline-{{ colorScheme }} mx-1" onclick="random_lines()">Random Lines</button>
     </div>
   </div>
   <div class="container-fluid algo-container">
@@ -40,31 +38,31 @@
                 <tr class="text-center">
                   <th>Line 01</th>
                   <td>
-                    <input type="number" class="col-6" name="l1p1x" id="l1p1x" placeholder="x1" />
+                    <input type="number" class="col-lg-8 col-12" name="l1p1x" id="l1p1x" placeholder="x1" />
                   </td>
                   <td>
-                    <input type="number" class="col-6" name="l1p1y" id="l1p1y" placeholder="y1" />
+                    <input type="number" class="col-lg-8 col-12" name="l1p1y" id="l1p1y" placeholder="y1" />
                   </td>
                   <td>
-                    <input type="number" class="col-6" name="l1p2x" id="l1p2x" placeholder="x2" />
+                    <input type="number" class="col-lg-8 col-12" name="l1p2x" id="l1p2x" placeholder="x2" />
                   </td>
                   <td>
-                    <input type="number" class="col-6" name="l1p2x" id="l1p2y" placeholder="y2" />
+                    <input type="number" class="col-lg-8 col-12" name="l1p2x" id="l1p2y" placeholder="y2" />
                   </td>
                 </tr>
                 <tr class="text-center">
                   <th>Line 02</th>
                   <td>
-                    <input type="number" class="col-6" name="l2p2y" id="l2p2y" placeholder="x1" />
+                    <input type="number" class="col-lg-8 col-12" name="l2p1x" id="l2p1x" placeholder="x1" />
                   </td>
                   <td>
-                    <input type="number" class="col-6" name="l2p2y" id="l2p2y" placeholder="y1" />
+                    <input type="number" class="col-lg-8 col-12" name="l2p1y" id="l2p1y" placeholder="y1" />
                   </td>
                   <td>
-                    <input type="number" class="col-6" name="l2p2y" id="l2p2y" placeholder="x2" />
+                    <input type="number" class="col-lg-8 col-12" name="l2p2x" id="l2p2x" placeholder="x2" />
                   </td>
                   <td>
-                    <input type="number" class="col-6" name="l2p2y" id="l2p2y" placeholder="y2" />
+                    <input type="number" class="col-lg-8 col-12" name="l2p2y" id="l2p2y" placeholder="y2" />
                   </td>
                 </tr>
               </tbody>
