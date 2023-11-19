@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function addCoordinates() {
     const coordinates = JSON.parse(localStorage.getItem("coordinates")) || [];
-    if (coordinates.length < 2) {
+    if (coordinates.length < 4) {
         const xInput = document.getElementById("x-coordinate");
         const yInput = document.getElementById("y-coordinate");
         const x = parseFloat(xInput.value);
