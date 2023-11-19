@@ -12,7 +12,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{% static 'CHS_App/CHS Logo.png' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'CHS_App/CHS Logo_white_bg.png' %}" />
 
     <!-- Personal -->
     <link href="{% static 'CHS_App/base.css' %}" rel="stylesheet" />
@@ -44,6 +44,21 @@
                 <div class="dropdown">
                   <button class="allocation_dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Algorithms</button>
                   <ul class="dropdown-menu">
+                    <li>
+                      <h1 class="dropdown-header">Line Intersection</h1>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:line_intersection' 1 %}">LI1</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'CHS_App:line_intersection' 2 %}">LI2</a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <h1 class="dropdown-header">Convex Hull</h1>
+                    </li>
                     <li>
                       <a class="dropdown-item" href="{% url 'CHS_App:algorithm' 'brute_force' %}">Brute Force</a>
                     </li>

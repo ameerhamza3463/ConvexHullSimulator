@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    showConvexHullContainer();
+     showConvexHullContainer()
+    // document.querySelector("#convexHullContainer").style.display = 'none';
+    // document.querySelector("#lineIntersectionContainer").style.display = 'none';
 })
 
 function showConvexHullContainer() {

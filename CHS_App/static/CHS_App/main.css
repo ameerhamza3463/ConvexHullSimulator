@@ -71,3 +71,7 @@ input {
     border: 1px solid lightgray;
     overflow: hidden;
 }
+.dropdown-menu li :active
+{
+    background-color: #393939;
+}
