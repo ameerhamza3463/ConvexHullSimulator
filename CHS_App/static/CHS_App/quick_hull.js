@@ -19,6 +19,52 @@ function InputPoints() {
     return coordinates;
 }
 
+// draws the graph that includes points that are not necessarily the part of the hull
+async function drawcheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY) {
+    GRAPH = document.getElementById('graphs-div');
+    var trace1 = {
+        x: unSelectedVerticeX,
+        y: unSelectedVerticeY,
+        mode: 'markers',
+        type: 'scatter',
+        name: "Unselected Vertices",
+        marker: { size: 12 }
+    }
+    var trace2 = {
+        x: selectedVerticeX,
+        y: selectedVerticeY,
+        mode: 'lines+markers',
+        type: 'scatter',
+        name: "Selected Vertices",
+        marker: { size: 18, color: 'green'}
+    }
+    data = [trace1, trace2, { title: 'Brute Force' }];
+    Plotly.newPlot('graphs-div', data);
+}
+
+// draws the graph that has only those points that are part of the hull
+async function drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY) {
+    GRAPH = document.getElementById('graphs-div');
+    var trace1 = {
+        x: unSelectedVerticeX,
+        y: unSelectedVerticeY,
+        mode: 'markers',
+        type: 'scatter',
+        name: "Unselected Vertices",
+        marker: { size: 12 }
+    }
+    var trace2 = {
+        x: selectedVerticeX,
+        y: selectedVerticeY,
+        mode: 'lines+markers',
+        type: 'scatter',
+        name: "Selected Vertices",
+        marker: { size: 12 }
+    }
+    data = [trace1, trace2, { title: 'Brute Force' }];
+    Plotly.newPlot('graphs-div', data);
+}
+
 // finds the index of a point in the array
 function find(p1x, p1y, x, y) {
     for (let i = 0; i < x.length; i++) {
@@ -109,6 +155,7 @@ function calcbelow(p1x, p1y, p2x, p2y, x, y) {
     return pointsbelow;
 }
 
+// finds the point which is the farthest away from the line
 function farthest_distance(p1x, p1y, p2x, p2y, xpoints, ypoints) {
     let far_distance = 0;
     let farthest_index = -1;
@@ -132,74 +179,124 @@ function farthest_distance(p1x, p1y, p2x, p2y, xpoints, ypoints) {
     return farthest_index;
 }
 
-function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
+// the recursive function for quickhull
+async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
 
     if (xpoints.length === 0) {
         return;
     }
 
+    if(state === "mid")
+    {
+        selectedx.push(p1x);
+        selectedx.push(p2x);
+
+        selectedy.push(p1y);
+        selectedy.push(p2y);
+
+        selectedx.push(p1x);
+        selectedy.push(p1y);
+
+        // call the displayer
+        console.log(selectedx);
+        console.log(selectedy);
+
+        console.log("Draw Graph");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
+        // here the displayer call will end
+    }
+
     if (state === "above" || state === "mid") {
         let aboveindex = calcabove(p1x, p1y, p2x, p2y, xpoints, ypoints);
+        
         if (aboveindex.length === 0) {
             return;
         }
+        
         let abovex = [];
         let abovey = [];
+        
         for (let i = 0; i < aboveindex.length; i++) {
             abovex.push(xpoints[aboveindex[i]]);
             abovey.push(ypoints[aboveindex[i]]);
         }
+        
         if (abovex.length === 0) {
             return;
         }
+        
         let farthest_index = farthest_distance(p1x, p1y, p2x, p2y, abovex, abovey);
         let farthestx = abovex[farthest_index];
         let farthesty = abovey[farthest_index];
+        
         let val = find(farthestx, farthesty, unselectedx, unselectedy);
         if (val === -1) {
             return;
         }
         unselectedx.splice(val, 1);
         unselectedy.splice(val, 1);
-        selectedx.push(farthestx);
-        selectedy.push(farthesty);
+        
+        val = find(p1x , p1y , selectedx , selectedy);
+        selectedx.splice(val + 1 , 0 , farthestx);
+        selectedy.splice(val + 1 , 0 , farthesty);
+        
         // call the displayer
         console.log(selectedx);
         console.log(selectedy);
+
+        console.log("Draw Graph");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
         // here the displayer call will end
+        
         quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
         quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
     }
 
     if (state === "below" || state === "mid") {
         let belowindex = calcbelow(p1x, p1y, p2x, p2y, xpoints, ypoints);
+        
         if (belowindex.length === 0) {
             return;
         }
+        
         let belowx = [];
         let belowy = [];
+        
         for (let i = 0; i < belowindex.length; i++) {
             belowx.push(xpoints[belowindex[i]]);
             belowy.push(ypoints[belowindex[i]]);
         }
+        
         if (belowx.length === 0) {
             return;
         }
+        
         let farthest_index = farthest_distance(p1x, p1y, p2x, p2y, belowx, belowy);
         let farthestx = belowx[farthest_index];
         let farthesty = belowy[farthest_index];
+        
         let val = find(farthestx, farthesty, unselectedx, unselectedy);
         if (val === -1) {
             return;
         }
         unselectedx.splice(val, 1);
         unselectedy.splice(val, 1);
-        selectedx.push(farthestx);
-        selectedy.push(farthesty);
+        
+        val = find(p2x , p2y , selectedx , selectedy);
+        selectedx.splice(val + 1 , 0 , farthestx);
+        selectedy.splice(val + 1 , 0 , farthesty);
+        
         // call the displayer
         console.log(selectedx);
         console.log(selectedy);
+        
+        console.log("Draw Graph");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
         // here the displayer call will end
+        
         quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
         quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
     }
@@ -207,7 +304,8 @@ function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
     return;
 }
 
-function quick_hull() {
+// the starting function for quickhull algorithm
+async function quick_hull() {
 
     const points = InputPoints();
     const n = points.length;
@@ -244,21 +342,10 @@ function quick_hull() {
     let p2y = y[n - 1];
 
 
-    selectedx.splice(0, 0, x[0], x[n - 1]);
-    selectedy.splice(0, 0, y[0], y[n - 1]);
-    // draw graph once
-    selectedx.splice(0, 2);
-    selectedy.splice(0, 2);
-
-
     quickhull2(p1x, p1y, p2x, p2y, x, y, "mid");
+
     unselectedx.splice(0, 1);
     unselectedy.splice(0, 1);
     unselectedx.splice(n - 1, 1);
     unselectedy.splice(n - 1, 1);
-
-    selectedx.splice(0, 0, x[0], x[n - 1]);
-    selectedy.splice(0, 0, y[0], y[n - 1]);
-    console.log(selectedx);
-    console.log(selectedy);
 }

@@ -16,6 +16,7 @@ function InputPoints() {
     return coordinates;
 }
 
+// draws the graph that includes points that are not necessarily the part of the hull
 async function drawcheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY) {
     GRAPH = document.getElementById('graphs-div');
     var trace1 = {
@@ -38,6 +39,7 @@ async function drawcheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedV
     Plotly.newPlot('graphs-div', data);
 }
 
+// draws the graph that has only those points that are part of the hull
 async function drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY) {
     GRAPH = document.getElementById('graphs-div');
     var trace1 = {
@@ -61,12 +63,15 @@ async function drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX,
 }
 
 // finds index
-function find(arr , val){
-    for(let i = 0 ; i < arr.length ; i++)
+function find(px , py , x , y){
+    for(let i = 0 ; i < x.length ; i++)
     {
-        if(arr[i] === val)
+        if(x[i] === px)
         {
-            return i;
+            if(y[i] === py)
+            {
+                return i;
+            }
         }
     }
     return -1;
@@ -139,27 +144,30 @@ async function brute_force() {
             if (done === false) {
                 selectedx.push(x[i]);
                 selectedy.push(y[i]);
-                val = find(unselectedx , x[i]);
-                unselectedx.splice(val , 1);
-                unselectedy.splice(val , 1);
                 count++;
                 done = true;
             }
 
             for (j = 0; j <= hull[i]; j++) {
+                if(find(x[j] , y[j] , selectedx , selectedy) > -1)
+                {
+                    continue;
+                }
                 selectedx.push(x[j]);
                 selectedy.push(y[j]);
-                val = find(unselectedx , x[j]);
-                if(val != -1)
-                {
-                    unselectedx.splice(val , 1);
-                    unselectedy.splice(val , 1);
-                }
 
-                // call displayer
-                // console.log("Draw Graph");
-                // await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
-                // await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
+                if(j === hull[i])
+                {
+                    console.log("Draw Graph");
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
+                }
+                else
+                {
+                    console.log("Draw checking Graph");
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    await drawcheckingGraph(selectedx, selectedy, unselectedx, unselectedy);
+                }
 
                 console.log(selectedx);
                 console.log(selectedy);
@@ -168,14 +176,10 @@ async function brute_force() {
 
                 savedx = selectedx.pop();
                 savedy = selectedy.pop();
-                unselectedx.push(savedx);
-                unselectedy.push(savedy);
             }
 
             selectedx.push(savedx);
             selectedy.push(savedy);
-            unselectedx.pop();
-            unselectedy.pop();
 
             i = hull[i];
             count++;
@@ -185,7 +189,10 @@ async function brute_force() {
         i++;
     }
 
+    selectedx.push(selectedx[0]);
+    selectedy.push(selectedy[0]);
+
     console.log("Draw Graph");
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
 }
