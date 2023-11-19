@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+from .models import AlgorithmComplexity
 
 # Create your views here.
 def main(request):
@@ -38,6 +38,8 @@ def algorithm(request, algorithm):
         colorScheme = "warning"
         research_paper_reference = "https://scholarworks.calstate.edu/downloads/2z10ww05b"
 
+    algorithm_complexity = AlgorithmComplexity.objects.get(algorithm_name=algorithmTitle)
+
     return render(
         request,
         "CHS_App/algorithm.html",
@@ -46,6 +48,7 @@ def algorithm(request, algorithm):
             "algorithmTitle": algorithmTitle,
             "colorScheme": colorScheme,
             "research_paper_reference": research_paper_reference,
+            "algorithm_complexity": algorithm_complexity
         },
     )
 

@@ -24,7 +24,24 @@
       <a href="#graphs-div"><button type="button" class="btn btn-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a>
       <button type="button" class="btn btn-outline-dark" onclick="clearDataset()">Clear Dataset 🗑️</button>
     </div>
-    <div class="col-12 mt-2 border border-{{ colorScheme }} rounded bg-{{ colorScheme }}-subtle" style="height: 10rem;"></div>
+    <div class="complexity-d p-2 col-12 mt-2 border border-{{ colorScheme }} rounded bg-{{ colorScheme }}-subtle">
+      <div class="fw-semibold fs-5 mb-2 px-3">Complexity</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <span class="fw-semibold">Best Case</span>
+          {{ algorithm_complexity.best_case }}
+        </li>
+        <li class="list-group-item">
+          <span class="fw-semibold">Average Case</span>
+          {{ algorithm_complexity.avg_case }}
+        </li>
+        <li class="list-group-item">
+          <span class="fw-semibold">Worst Case</span>
+          {{ algorithm_complexity.worst_case }}
+        </li>
+      </ul>
+      <div class="mt-3 mb-1 px-3">{{ algorithm_complexity.little_info }}</div>
+    </div>
   </div>
   <div class="container-fluid algo-container">
     <div class="d-flex flex-wrap">

@@ -71,7 +71,18 @@ input {
     border: 1px solid lightgray;
     overflow: hidden;
 }
-.dropdown-menu li :active
-{
+
+.dropdown-menu li :active {
     background-color: #393939;
+}
+
+.complexity-d{
+    height: max-content;
+}
+.complexity-d ul {
+    background-color: transparent !important;
+}
+
+.complexity-d ul li {
+    background-color: transparent !important;
 }
