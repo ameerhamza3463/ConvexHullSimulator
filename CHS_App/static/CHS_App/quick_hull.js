@@ -305,7 +305,7 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
 }
 
 // the starting function for quickhull algorithm
-async function quick_hull() {
+function quick_hull() {
 
     const points = InputPoints();
     const n = points.length;

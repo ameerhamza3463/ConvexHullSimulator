@@ -89,6 +89,10 @@ async function brute_force() {
         alert("Enter at least three points.");
         return;
     };
+
+    console.log("points array");
+    console.log(points);
+
     let x = [];
     let y = [];
     let selectedx = [];
@@ -98,8 +102,8 @@ async function brute_force() {
     let total = 0, val;
 
     for (let i = 0; i < n; i++) {
-        x = x + points[i].x;
-        y = y + points[i].y;
+        x.push(points[i].x);
+        y.push(points[i].y);
     }
     let hull = new Array(n).fill(-1);
 
