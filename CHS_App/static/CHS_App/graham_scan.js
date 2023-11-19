@@ -1,4 +1,4 @@
-
+let grahamScanInProgress = false;
 let p0; //Global variable to store bottom_most point
 
 //FUNCTION TO DRAW GRAPH WHILE CHECKING
@@ -85,7 +85,15 @@ function compare(vp1, vp2) {
 }
 
 // Function to find the convex hull using the Graham Scan algorithm
-async function gram_scan() {
+async function graham_scan() {
+    // Check if the function is already in progress
+    if (grahamScanInProgress) {
+        alert('Graham Scan is already in progress. Ignoring the new invocation.');
+        return;
+    }
+    // Set the flag to indicate that the function is in progress
+    grahamScanInProgress = true;
+
     const points = InputPoints();
     const n = points.length;
 
@@ -120,8 +128,8 @@ async function gram_scan() {
 
     // Place the point with the lowest y-coordinate at the beginning
     [points[0], points[bottom_most]] = [points[bottom_most], points[0]];
-    p0 = points[0]; 
-    
+    p0 = points[0];
+
     // Sort the rest of the points based on polar angle with p0
     points.sort(compare);
 
@@ -137,7 +145,7 @@ async function gram_scan() {
     selectedVerticeY.push(points[0].y);
     unSelectedVerticeX.splice(0, 1);
     unSelectedVerticeY.splice(0, 1);
-    
+
     let next; // Variable to store index of next variable
     let hullIndex = 0; //Variable used for indices of convex hull
     let k;
@@ -161,36 +169,36 @@ async function gram_scan() {
     //Draw checking graph which will draw points present in the stack
     await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
     await drawCheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY);
-    
+
     // Process the rest of the points to construct the convex hull
     for (let i = 3; i < n; i++) {
         hullIndices[hullIndex] = current;
         next = (current + 1) % n;
-        
+
         // Remove points that create a clockwise turn
         while (m > 1 && checkCCW(hull[m - 2], hull[m - 1], points[i]) !== 2) {
             await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
             await drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY);
             let lastelement = hull.pop(); //Pop last element from stack which is making clock wise turn
             m--; //Decrease count of elements in the stack
-            
+
             // Remove this last point making (clock wise) from selcted and put back into unselected
             selectedVerticeX.splice(-1, 1);
             selectedVerticeY.splice(-1, 1);
             unSelectedVerticeX.splice(0, 0, lastelement.x);
             unSelectedVerticeY.splice(0, 0, lastelement.y);
-            
+
             // Draw the graph which will show all the selected points by our algorithm
             await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
             await drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY);
         }
-        
+
         current = next; //Current element will become next 
         k = 0;
         // If a point is selected for convex hull and it is other than starting point
         if (current != 0) {
             hull[m++] = points[i]; //Insert next point into stack
-            
+
             // Insert this selected element into selected and remove from unselected
             selectedVerticeX.push(points[i].x);
             selectedVerticeY.push(points[i].y);
@@ -203,7 +211,7 @@ async function gram_scan() {
             }
             unSelectedVerticeY.splice(k, 1);
             unSelectedVerticeX.splice(k, 1);
-            
+
             //Draw checking graph which will draw points present in the stack
             await new Promise((resolve) => setTimeout(resolve, 1000)); // Change the delay time as needed
             await drawCheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX, unSelectedVerticeY);
@@ -221,6 +229,8 @@ async function gram_scan() {
     for (let i = 0; i < hull.length; i++) {
         console.log(`(${hull[i].x}, ${hull[i].y})`);
     }
+    grahamScanInProgress = false;
+    print_convex_hull(hull);
 }
 
 // Function to take input points
@@ -233,4 +243,22 @@ function InputPoints() {
         }
     }
     return coordinates;
+}
+function print_convex_hull(convexHull) {
+    let convex_hull_div = document.querySelector("#convex-hull-div");
+    convex_hull_div.innerHTML = `
+    <div class="display-6 mt-1 mb-3">Convex Hull Points</div>
+    <ul class="list-group list-group-flush fs-5">
+    <li class="list-group-item fw-semibold">Total Length: ${convexHull.length}</li>
+    <li class="list-group-item fw-semibold"># (X, Y)</li>
+    </ul>`;
+
+    for (const point of convexHull) {
+        let li = document.createElement('li');
+        li.innerHTML = `(${point.x}, ${point.y})`;
+        li.classList.add("list-group-item");
+        convex_hull_div.querySelector("ul").appendChild(li);
+    }
+    // Scroll to the convex hull div
+    convex_hull_div.scrollIntoView({ behavior: 'smooth' });
 }

@@ -10,7 +10,7 @@ def algorithm(request, algorithm):
     algorithms = [
         "brute_force",
         "jarvis_march",
-        "gram_scan",
+        "graham_scan",
         "quick_hull",
         "research_paper",
     ]
@@ -27,7 +27,7 @@ def algorithm(request, algorithm):
         algorithmTitle = "Jarvis March"
         colorScheme = "secondary"
     elif algorithm == algorithms[2]:
-        algorithmTitle = "Gram Scan"
+        algorithmTitle = "Graham Scan"
         colorScheme = "success"
     elif algorithm == algorithms[3]:
         algorithmTitle = "Quick Hull"

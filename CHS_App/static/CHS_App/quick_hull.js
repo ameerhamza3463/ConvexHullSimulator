@@ -1,4 +1,4 @@
-console.log("quick hull");
+let quickHullInProgress = false;
 let selectedx = [];
 let selectedy = [];
 let unselectedx = [];
@@ -249,8 +249,8 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
         await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
         // here the displayer call will end
 
-        quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
-        quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
+        await quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
+        await quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
     }
 
     if (state === "below" || state === "mid") {
@@ -296,8 +296,8 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
         await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
         // here the displayer call will end
 
-        quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
-        quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
+        await quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
+        await quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
     }
 
     return;
@@ -305,6 +305,13 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
 
 // the starting function for quickhull algorithm
 async function quick_hull() {
+    // Check if the function is already in progress
+    if (quickHullInProgress) {
+        alert('Jarvis March is already in progress. Ignoring the new invocation.');
+        return;
+    }
+    // Set the flag to indicate that the function is in progress
+    quickHullInProgress = true;
 
     const points = InputPoints();
     const n = points.length;
@@ -318,7 +325,12 @@ async function quick_hull() {
         return;
     };
 
-   
+    // Cause of erroe
+    selectedx = [];
+    selectedy = [];
+    unselectedx = [];
+    unselectedy = [];
+
     let x = [];
     let y = [];
 
@@ -342,10 +354,31 @@ async function quick_hull() {
     let p2y = y[n - 1];
 
 
-    quickhull2(p1x, p1y, p2x, p2y, x, y, "mid");
+    await quickhull2(p1x, p1y, p2x, p2y, x, y, "mid");
 
     unselectedx.splice(0, 1);
     unselectedy.splice(0, 1);
     unselectedx.splice(n - 1, 1);
     unselectedy.splice(n - 1, 1);
+    quickHullInProgress = false;
+    print_convex_hull(selectedx, selectedy);
+}
+function print_convex_hull(selectedx, selectedy) {
+    let convex_hull_div = document.querySelector("#convex-hull-div");
+    convex_hull_div.innerHTML = `
+    <div class="display-6 mt-1 mb-3">Convex Hull Points</div>
+    <ul class="list-group list-group-flush fs-5">
+    <li class="list-group-item fw-semibold">Total Length: ${selectedx.length}</li>
+    <li class="list-group-item fw-semibold"># (X, Y)</li>
+    </ul>`;
+
+    let n = selectedx.length;
+    for (let i = 0; i < n; i++) {
+        let li = document.createElement('li');
+        li.innerHTML = `(${selectedx[i]}, ${selectedy[i]})`;
+        li.classList.add("list-group-item");
+        convex_hull_div.querySelector("ul").appendChild(li);
+    }
+    // Scroll to the convex hull div
+    convex_hull_div.scrollIntoView({ behavior: 'smooth' });
 }
