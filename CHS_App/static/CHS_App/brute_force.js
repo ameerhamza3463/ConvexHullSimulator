@@ -1,6 +1,4 @@
-console.log('brute force');
-
-
+let bruteForceInProgress = false;
 // Function to input points
 function InputPoints() {
 
@@ -33,7 +31,7 @@ async function drawcheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedV
         mode: 'lines+markers',
         type: 'scatter',
         name: "Selected Vertices",
-        marker: { size: 18, color: 'green'}
+        marker: { size: 18, color: 'green' }
     }
     data = [trace1, trace2, { title: 'Brute Force' }];
     Plotly.newPlot('graphs-div', data);
@@ -63,13 +61,10 @@ async function drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX,
 }
 
 // finds index
-function find(px , py , x , y){
-    for(let i = 0 ; i < x.length ; i++)
-    {
-        if(x[i] === px)
-        {
-            if(y[i] === py)
-            {
+function find(px, py, x, y) {
+    for (let i = 0; i < x.length; i++) {
+        if (x[i] === px) {
+            if (y[i] === py) {
                 return i;
             }
         }
@@ -78,6 +73,13 @@ function find(px , py , x , y){
 }
 
 async function brute_force() {
+    // Check if the function is already in progress
+    if (bruteForceInProgress) {
+        alert('Graham Scan is already in progress. Ignoring the new invocation.');
+        return;
+    }
+    // Set the flag to indicate that the function is in progress
+    bruteForceInProgress = true;
     const points = InputPoints();
     const n = points.length;
 
@@ -98,8 +100,10 @@ async function brute_force() {
     let total = 0, val;
 
     for (let i = 0; i < n; i++) {
-        x = x + points[i].x;
-        y = y + points[i].y;
+        // x = x + points[i].x;
+        // y = y + points[i].y;
+        x.push(points[i].x);
+        y.push(points[i].y);
     }
     let hull = new Array(n).fill(-1);
 
@@ -149,21 +153,18 @@ async function brute_force() {
             }
 
             for (j = 0; j <= hull[i]; j++) {
-                if(find(x[j] , y[j] , selectedx , selectedy) > -1)
-                {
+                if (find(x[j], y[j], selectedx, selectedy) > -1) {
                     continue;
                 }
                 selectedx.push(x[j]);
                 selectedy.push(y[j]);
 
-                if(j === hull[i])
-                {
+                if (j === hull[i]) {
                     console.log("Draw Graph");
                     await new Promise((resolve) => setTimeout(resolve, 1000));
                     await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
                 }
-                else
-                {
+                else {
                     console.log("Draw checking Graph");
                     await new Promise((resolve) => setTimeout(resolve, 1000));
                     await drawcheckingGraph(selectedx, selectedy, unselectedx, unselectedy);
@@ -195,4 +196,25 @@ async function brute_force() {
     console.log("Draw Graph");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
+    bruteForceInProgress = false;
+    print_convex_hull(selectedx, selectedy);
+}
+function print_convex_hull(selectedx, selectedy) {
+    let convex_hull_div = document.querySelector("#convex-hull-div");
+    convex_hull_div.innerHTML = `
+    <div class="display-6 mt-1 mb-3">Convex Hull Points</div>
+    <ul class="list-group list-group-flush fs-5">
+    <li class="list-group-item fw-semibold">Total Length: ${selectedx.length}</li>
+    <li class="list-group-item fw-semibold"># (X, Y)</li>
+    </ul>`;
+
+    let n = selectedx.length;
+    for (let i = 0; i < n; i++) {
+        let li = document.createElement('li');
+        li.innerHTML = `(${selectedx[i]}, ${selectedy[i]})`;
+        li.classList.add("list-group-item");
+        convex_hull_div.querySelector("ul").appendChild(li);
+    }
+    // Scroll to the convex hull div
+    convex_hull_div.scrollIntoView({ behavior: 'smooth' });
 }

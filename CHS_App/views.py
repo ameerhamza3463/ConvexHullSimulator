@@ -12,13 +12,14 @@ def algorithm(request, algorithm):
         "jarvis_march",
         "graham_scan",
         "quick_hull",
-        "research_paper",
+        "monotone_chain",
     ]
     if algorithm not in algorithms:
         return page_not_found_404(request, exception=404)
         # return redirect("CHS_App:page_not_found_404")
-
+        
     algorithmTitle = "None"
+    research_paper_reference = ""
     colorScheme = "None"
     if algorithm == algorithms[0]:
         algorithmTitle = "Brute Force"
@@ -33,8 +34,9 @@ def algorithm(request, algorithm):
         algorithmTitle = "Quick Hull"
         colorScheme = "danger"
     else:
-        algorithmTitle = "Research Paper"
+        algorithmTitle = "Monotone Chain"
         colorScheme = "warning"
+        research_paper_reference = "https://scholarworks.calstate.edu/downloads/2z10ww05b"
 
     return render(
         request,
@@ -43,6 +45,7 @@ def algorithm(request, algorithm):
             "algorithm": algorithm,
             "algorithmTitle": algorithmTitle,
             "colorScheme": colorScheme,
+            "research_paper_reference": research_paper_reference,
         },
     )
 
