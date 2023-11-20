@@ -38,7 +38,7 @@ async function drawcheckingGraph(selectedVerticeX, selectedVerticeY, unSelectedV
         name: "Selected Vertices",
         marker: { size: 18, color: 'green' }
     }
-    data = [trace1, trace2, { title: 'Brute Force' }];
+    data = [trace1, trace2, { title: 'Quick Hull' }];
     Plotly.newPlot('graphs-div', data);
 }
 
@@ -61,7 +61,7 @@ async function drawGraph(selectedVerticeX, selectedVerticeY, unSelectedVerticeX,
         name: "Selected Vertices",
         marker: { size: 12 }
     }
-    data = [trace1, trace2, { title: 'Brute Force' }];
+    data = [trace1, trace2, { title: 'Quick Hull' }];
     Plotly.newPlot('graphs-div', data);
 }
 
@@ -200,6 +200,11 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
         console.log(selectedx);
         console.log(selectedy);
 
+        unselectedx.splice(0, 1);
+        unselectedy.splice(0, 1);
+        unselectedx.pop();
+        unselectedy.pop();
+
         console.log("Draw Graph");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
@@ -209,95 +214,91 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
     if (state === "above" || state === "mid") {
         let aboveindex = calcabove(p1x, p1y, p2x, p2y, xpoints, ypoints);
 
-        if (aboveindex.length === 0) {
-            return;
+        if (aboveindex.length !== 0) {
+            let abovex = [];
+            let abovey = [];
+
+            for (let i = 0; i < aboveindex.length; i++) {
+                abovex.push(xpoints[aboveindex[i]]);
+                abovey.push(ypoints[aboveindex[i]]);
+            }
+
+            if (abovex.length === 0) {
+                return;
+            }
+
+            let farthest_index = farthest_distance(p1x, p1y, p2x, p2y, abovex, abovey);
+            let farthestx = abovex[farthest_index];
+            let farthesty = abovey[farthest_index];
+
+            let val = find(farthestx, farthesty, unselectedx, unselectedy);
+            if (val === -1) {
+                return;
+            }
+            unselectedx.splice(val, 1);
+            unselectedy.splice(val, 1);
+
+            val = find(p1x, p1y, selectedx, selectedy);
+            selectedx.splice(val + 1, 0, farthestx);
+            selectedy.splice(val + 1, 0, farthesty);
+
+            // call the displayer
+            console.log(selectedx);
+            console.log(selectedy);
+
+            console.log("Draw Graph");
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
+            // here the displayer call will end
+
+            quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
+            quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
         }
-
-        let abovex = [];
-        let abovey = [];
-
-        for (let i = 0; i < aboveindex.length; i++) {
-            abovex.push(xpoints[aboveindex[i]]);
-            abovey.push(ypoints[aboveindex[i]]);
-        }
-
-        if (abovex.length === 0) {
-            return;
-        }
-
-        let farthest_index = farthest_distance(p1x, p1y, p2x, p2y, abovex, abovey);
-        let farthestx = abovex[farthest_index];
-        let farthesty = abovey[farthest_index];
-
-        let val = find(farthestx, farthesty, unselectedx, unselectedy);
-        if (val === -1) {
-            return;
-        }
-        unselectedx.splice(val, 1);
-        unselectedy.splice(val, 1);
-
-        val = find(p1x, p1y, selectedx, selectedy);
-        selectedx.splice(val + 1, 0, farthestx);
-        selectedy.splice(val + 1, 0, farthesty);
-
-        // call the displayer
-        console.log(selectedx);
-        console.log(selectedy);
-
-        console.log("Draw Graph");
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
-        // here the displayer call will end
-
-        await quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
-        await quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
     }
 
     if (state === "below" || state === "mid") {
         let belowindex = calcbelow(p1x, p1y, p2x, p2y, xpoints, ypoints);
 
-        if (belowindex.length === 0) {
-            return;
+        if (belowindex.length !== 0) {
+            let belowx = [];
+            let belowy = [];
+
+            for (let i = 0; i < belowindex.length; i++) {
+                belowx.push(xpoints[belowindex[i]]);
+                belowy.push(ypoints[belowindex[i]]);
+            }
+
+            if (belowx.length === 0) {
+                return;
+            }
+
+            let farthest_index = farthest_distance(p1x, p1y, p2x, p2y, belowx, belowy);
+            let farthestx = belowx[farthest_index];
+            let farthesty = belowy[farthest_index];
+
+            let val = find(farthestx, farthesty, unselectedx, unselectedy);
+            if (val === -1) {
+                return;
+            }
+            unselectedx.splice(val, 1);
+            unselectedy.splice(val, 1);
+
+            val = find(p2x, p2y, selectedx, selectedy);
+            selectedx.splice(val + 1, 0, farthestx);
+            selectedy.splice(val + 1, 0, farthesty);
+
+            // call the displayer
+            console.log(selectedx);
+            console.log(selectedy);
+
+            console.log("Draw Graph");
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
+            // here the displayer call will end
+
+            quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
+            quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
         }
-
-        let belowx = [];
-        let belowy = [];
-
-        for (let i = 0; i < belowindex.length; i++) {
-            belowx.push(xpoints[belowindex[i]]);
-            belowy.push(ypoints[belowindex[i]]);
-        }
-
-        if (belowx.length === 0) {
-            return;
-        }
-
-        let farthest_index = farthest_distance(p1x, p1y, p2x, p2y, belowx, belowy);
-        let farthestx = belowx[farthest_index];
-        let farthesty = belowy[farthest_index];
-
-        let val = find(farthestx, farthesty, unselectedx, unselectedy);
-        if (val === -1) {
-            return;
-        }
-        unselectedx.splice(val, 1);
-        unselectedy.splice(val, 1);
-
-        val = find(p2x, p2y, selectedx, selectedy);
-        selectedx.splice(val + 1, 0, farthestx);
-        selectedy.splice(val + 1, 0, farthesty);
-
-        // call the displayer
-        console.log(selectedx);
-        console.log(selectedy);
-
-        console.log("Draw Graph");
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
-        // here the displayer call will end
-
-        await quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
-        await quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
     }
 
     return;
@@ -337,12 +338,14 @@ async function quick_hull() {
     for (let i = 0; i < n; i++) {
         x.push(points[i].x);
         y.push(points[i].y);
-
-        unselectedx.push(points[i].x);
-        unselectedy.push(points[i].y);
     }
 
     sort(x, y, n);
+
+    for (let i = 0; i < n; i++) {
+        unselectedx.push(x[i]);
+        unselectedy.push(y[i]);
+    }
 
     console.log("x and y Array:");
     console.log(x);
@@ -353,13 +356,7 @@ async function quick_hull() {
     let p2x = x[n - 1];
     let p2y = y[n - 1];
 
-
     await quickhull2(p1x, p1y, p2x, p2y, x, y, "mid");
-
-    unselectedx.splice(0, 1);
-    unselectedy.splice(0, 1);
-    unselectedx.splice(n - 1, 1);
-    unselectedy.splice(n - 1, 1);
     quickHullInProgress = false;
     print_convex_hull(selectedx, selectedy);
 }
