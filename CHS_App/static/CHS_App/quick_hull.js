@@ -251,8 +251,8 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
             await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
             // here the displayer call will end
 
-            quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
-            quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
+            await quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "above");
+            await quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "above");
         }
     }
 
@@ -296,8 +296,8 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
             await drawGraph(selectedx, selectedy, unselectedx, unselectedy);
             // here the displayer call will end
 
-            quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
-            quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
+            await quickhull2(p1x, p1y, farthestx, farthesty, unselectedx, unselectedy, "below");
+            await quickhull2(farthestx, farthesty, p2x, p2y, unselectedx, unselectedy, "below");
         }
     }
 
@@ -308,7 +308,7 @@ async function quickhull2(p1x, p1y, p2x, p2y, xpoints, ypoints, state) {
 async function quick_hull() {
     // Check if the function is already in progress
     if (quickHullInProgress) {
-        alert('Jarvis March is already in progress. Ignoring the new invocation.');
+        alert('Quick Hull is already in progress. Ignoring the new invocation.');
         return;
     }
     // Set the flag to indicate that the function is in progress
@@ -365,12 +365,12 @@ function print_convex_hull(selectedx, selectedy) {
     convex_hull_div.innerHTML = `
     <div class="display-6 mt-1 mb-3">Convex Hull Points</div>
     <ul class="list-group list-group-flush fs-5">
-    <li class="list-group-item fw-semibold">Total Length: ${selectedx.length}</li>
+    <li class="list-group-item fw-semibold">Total Length: ${selectedx.length-1}</li>
     <li class="list-group-item fw-semibold"># (X, Y)</li>
     </ul>`;
 
     let n = selectedx.length;
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < n-1; i++) {
         let li = document.createElement('li');
         li.innerHTML = `(${selectedx[i]}, ${selectedy[i]})`;
         li.classList.add("list-group-item");

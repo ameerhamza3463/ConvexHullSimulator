@@ -108,6 +108,7 @@ function checkCCW(a, b, c) {
 
 function drawGraph(line1, line2, intersect) {
     let output_color = intersect ? 'green' : "blue";
+    let output_name = intersect ? 'Intersecting' : "Not Intersecting"
     GRAPH = document.getElementById('graphs-div');
     var trace1 = {
         x: [line1.point1.x, line1.point2.x],
@@ -125,8 +126,13 @@ function drawGraph(line1, line2, intersect) {
         name: "Lines 02",
         marker: { size: 12, color: output_color }
     }
+    var layout = {
+        title: {
+            text: output_name,
+        }
+    }
     data = [trace1, trace2, { title: 'Line Intersection' }];
-    Plotly.newPlot('graphs-div', data);
+    Plotly.newPlot('graphs-div', data, layout);
 
 }
 
