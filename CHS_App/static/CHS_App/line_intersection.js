@@ -65,6 +65,24 @@ function random_lines() {
 
 }
 
+function findIntersection(line1, line2) {
+    // Extract coordinates
+    let x1 = line1.point1.x, y1 = line1.point1.y;
+    let x2 = line1.point2.x, y2 = line1.point2.y;
+    let x3 = line2.point1.x, y3 = line2.point1.y;
+    let x4 = line2.point2.x, y4 = line2.point2.y;
+
+    // Calculate the intersection point
+    let x =
+        ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) /
+        ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+
+    let y =
+        ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) /
+        ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+
+    return new Point(x, y);
+}
 function getRandomCoordinate() {
     return Math.random() * 100; // Adjust the range as needed
 }
@@ -95,7 +113,7 @@ function ccw() {
         } else {
             console.log("False");
         }
-        drawGraph(line1, line2, intersect);
+        drawGraph(line1, line2, intersect, intersect ? findIntersection(line1, line2) : null);
     }
 }
 function slope_line_method() { }
@@ -107,9 +125,14 @@ function checkCCW(a, b, c) {
     else return 0;
 }
 
-function drawGraph(line1, line2, intersect) {
+function line_intersection_03() {
+    console.log('line_intersection_03');
+}
+
+function drawGraph(line1, line2, intersect, intersection_point) {
     let output_color = intersect ? 'green' : "blue";
     let output_name = intersect ? 'Intersecting' : "Not Intersecting"
+    var trace3 = {};
     GRAPH = document.getElementById('graphs-div');
     var trace1 = {
         x: [line1.point1.x, line1.point2.x],
@@ -127,12 +150,22 @@ function drawGraph(line1, line2, intersect) {
         name: "Lines 02",
         marker: { size: 12, color: output_color }
     }
+    if (intersection_point !== null) {
+        trace3 = {
+            x: [intersection_point.x],
+            y: [intersection_point.y],
+            mode: 'lines+markers',
+            type: 'lines',
+            name: "Intersection",
+            marker: { size: 13, color: "orange" }
+        }
+    }
     var layout = {
         title: {
             text: output_name,
         }
     }
-    data = [trace1, trace2, { title: 'Line Intersection' }];
+    data = [trace1, trace2, trace3, { title: 'Line Intersection' }];
     Plotly.newPlot('graphs-div', data, layout);
 
 }
