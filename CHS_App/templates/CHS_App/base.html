@@ -32,7 +32,27 @@
         <div class="container-fluid">
           <a class="navbar-brand d-flex align-items-center" href="{% url 'CHS_App:main' %}">
             <img src="{% static 'CHS_App/CHS Logo.png' %}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top" />
-            <div class="mx-2 fs-4">Convex Hull Simulator</div>
+            <div id="logo_chs" class="mx-2 fs-4">Convex Hull Simulator</div>
+            <script>
+              document.addEventListener('DOMContentLoaded', () => {
+                // Initial update
+                updateTextBasedOnScreenSize()
+              
+                // Update text when the window is resized
+                window.addEventListener('resize', updateTextBasedOnScreenSize)
+              })
+              
+              function updateTextBasedOnScreenSize() {
+                var screenWidth = window.innerWidth
+                var logo_chs_div = document.getElementById('logo_chs')
+              
+                if (screenWidth < 425) {
+                  logo_chs_div.textContent = 'CHS'
+                } else {
+                  logo_chs_div.textContent = 'Convex Hull Simulator'
+                }
+              }
+            </script>
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
           <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
