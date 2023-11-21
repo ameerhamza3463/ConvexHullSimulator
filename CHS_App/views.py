@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import AlgorithmComplexity
 
+
 # Create your views here.
 def main(request):
     return render(request, "CHS_App/main.html")
@@ -17,7 +18,7 @@ def algorithm(request, algorithm):
     if algorithm not in algorithms:
         return page_not_found_404(request, exception=404)
         # return redirect("CHS_App:page_not_found_404")
-        
+
     algorithmTitle = "None"
     research_paper_reference = ""
     colorScheme = "None"
@@ -36,9 +37,13 @@ def algorithm(request, algorithm):
     else:
         algorithmTitle = "Monotone Chain"
         colorScheme = "warning"
-        research_paper_reference = "https://scholarworks.calstate.edu/downloads/2z10ww05b"
+        research_paper_reference = (
+            "https://scholarworks.calstate.edu/downloads/2z10ww05b"
+        )
 
-    algorithm_complexity = AlgorithmComplexity.objects.get(algorithm_name=algorithmTitle)
+    algorithm_complexity = AlgorithmComplexity.objects.get(
+        algorithm_name=algorithmTitle
+    )
 
     return render(
         request,
@@ -48,7 +53,7 @@ def algorithm(request, algorithm):
             "algorithmTitle": algorithmTitle,
             "colorScheme": colorScheme,
             "research_paper_reference": research_paper_reference,
-            "algorithm_complexity": algorithm_complexity
+            "algorithm_complexity": algorithm_complexity,
         },
     )
 
@@ -57,12 +62,12 @@ def line_intersection(request, num):
     colorScheme = "None"
     algorithm = "None"
     if num == 1:
-        algorithmTitle = "Line Intersection 01"
-        algorithm = "line_intersection_01"
+        algorithmTitle = "CCW"
+        algorithm = "ccw"
         colorScheme = "info"
     elif num == 2:
-        algorithmTitle = "Line Intersection 02"
-        algorithm = "line_intersection_02"
+        algorithmTitle = "Slope Line Method"
+        algorithm = "slope_line_method"
         colorScheme = "dark"
     else:
         return redirect("CHS_App:page_not_found_404")
@@ -75,6 +80,10 @@ def line_intersection(request, num):
             "colorScheme": colorScheme,
         },
     )
+
+
+def team(request):
+    return render(request, "CHS_App/team.html")
 
 
 def page_not_found_404(request, exception):

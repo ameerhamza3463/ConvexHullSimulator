@@ -69,7 +69,7 @@ function getRandomCoordinate() {
     return Math.random() * 100; // Adjust the range as needed
 }
 
-function line_intersection_01() {
+function ccw() {
     if (check_input_coordinates()) {
         alert("Please enter valid numeric values for all points.");
         return;
@@ -98,6 +98,7 @@ function line_intersection_01() {
         drawGraph(line1, line2, intersect);
     }
 }
+function slope_line_method() { }
 
 function checkCCW(a, b, c) {
     const val = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);

@@ -48,10 +48,10 @@
                       <h1 class="dropdown-header">Line Intersection</h1>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{% url 'CHS_App:line_intersection' 1 %}">LI1</a>
+                      <a class="dropdown-item" href="{% url 'CHS_App:line_intersection' 1 %}">CCW</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{% url 'CHS_App:line_intersection' 2 %}">LI2</a>
+                      <a class="dropdown-item" href="{% url 'CHS_App:line_intersection' 2 %}">Slope Line Method</a>
                     </li>
                     <li>
                       <hr class="dropdown-divider" />
@@ -78,7 +78,7 @@
                 </div>
               </li>
               <li class="nav-item me-3">
-                <a class="nav-link" href="#">Our Team</a>
+                <a class="nav-link" href="{% url 'CHS_App:team' %}">Our Team</a>
               </li>
             </ul>
           </div>
