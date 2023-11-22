@@ -1,3 +1,4 @@
+// structures for the program
 class Point {
     constructor(x, y) {
         this.x = x;
@@ -11,6 +12,8 @@ class Line {
         this.point2 = point2;
     }
 }
+
+// getting and generating input co-ordinates functions
 function check_input_coordinates() {
     let l1p1x = document.querySelector("#l1p1x").value;
     let l1p1y = document.querySelector("#l1p1y").value;
@@ -32,6 +35,7 @@ function check_input_coordinates() {
     }
     return false;
 }
+
 function get_input_coordinates() {
     let l1p1 = new Point(parseInt(document.querySelector("#l1p1x").value), parseInt(document.querySelector("#l1p1y").value));
     let l1p2 = new Point(parseInt(document.querySelector("#l1p2x").value), parseInt(document.querySelector("#l1p2y").value));
@@ -40,6 +44,11 @@ function get_input_coordinates() {
 
     return [new Line(l1p1, l1p2), new Line(l2p1, l2p2)];
 }
+
+function getRandomCoordinate() {
+    return Math.random() * 100; // Adjust the range as needed
+}
+
 function random_lines() {
     // Generate random coordinates for Line 1
     let l1p1x = getRandomCoordinate();
@@ -65,6 +74,7 @@ function random_lines() {
 
 }
 
+// first line intersection algo's helper and main functions
 function findIntersection(line1, line2) {
     // Extract coordinates
     let x1 = line1.point1.x, y1 = line1.point1.y;
@@ -83,8 +93,12 @@ function findIntersection(line1, line2) {
 
     return new Point(x, y);
 }
-function getRandomCoordinate() {
-    return Math.random() * 100; // Adjust the range as needed
+
+function checkCCW(a, b, c) {
+    const val = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);
+    if (val < 0) return -1;
+    else if (val > 0) return 1;
+    else return 0;
 }
 
 function ccw() {
@@ -116,19 +130,152 @@ function ccw() {
         drawGraph(line1, line2, intersect, intersect ? findIntersection(line1, line2) : null);
     }
 }
-function slope_line_method() { }
 
-function checkCCW(a, b, c) {
-    const val = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);
-    if (val < 0) return -1;
-    else if (val > 0) return 1;
-    else return 0;
+// second line intersection algo's helper and main functions
+function slope_line_method() {
+
+}
+
+// third line intersection algo's helper and main functions
+function calcDet(a, b, c, d) {
+    return ((a * d) - (b * c));
+}
+
+function intercept(p1x, p1y, p2x, p2y, m) {
+    return p1y - (m * p1x);
+}
+
+function slope(p1x, p1y, p2x, p2y) {
+    return (p2y - p1y) / (p2x - p1x);
 }
 
 function line_intersection_03() {
+    // getting the line inputs
     console.log('line_intersection_03');
+
+    if (check_input_coordinates()) {
+        alert("Please enter valid numeric values for all points.");
+        return;
+    }
+    let [line1, line2] = get_input_coordinates();
+    console.log(line1);
+    console.log(line2);
+
+    // declaring line and point variables
+    let p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y;
+    let l1a, l1b, l1c, l2a, l2b, l2c;
+
+    // extracting points from the entered values
+    p1x = line1.point1.x;
+    p1y = line1.point1.y;
+    p2x = line1.point2.x;
+    p2y = line1.point2.y;
+
+    p3x = line2.point1.x;
+    p3y = line2.point1.y;
+    p4x = line2.point2.x;
+    p4y = line2.point2.y;
+
+    // printing the line points
+    console.log("Line details:\n");
+    console.log("Line 1 point details:\n", `${p1x},${p1y}\n${p2x},${p2y}\n\n`);
+    console.log("Line 2 point details:\n", `${p3x},${p3y}\n${p4x},${p4y}\n\n`);
+
+    // declaring slope and intercept variables
+    let m1, m2, c1, c2;
+
+    // calculating the slope and intercept of the two lines
+    m1 = slope(p1x, p1y, p2x, p2y);
+    m2 = slope(p3x, p3y, p4x, p4y);
+
+    c1 = intercept(p1x, p1y, p2x, p2y, m1);
+    c2 = intercept(p3x, p3y, p4x, p4y, m2);
+
+    console.log("The slope of line 1 is: ", `${m1}\n`);
+    console.log("The slope of line 2 is: ", `${m2}\n`);
+
+    console.log("The intercept of line 1 is: ", `${c1}\n`);
+    console.log("The intercept of line 2 is: ", `${c2}\n\n`);
+
+    if (!isFinite(m1) && !isFinite(m2)) {
+        console.log("Lines are parallel");
+        ccw();
+        return;
+    }
+    else if (!isFinite(m1) || !isFinite(m2)) {
+        console.log("Either line is vertical");
+        return;
+    }
+
+    // giving values to the line variables
+    l1a = (-1 * m1);
+    l1b = 1;
+    l1c = c1;
+
+    l2a = (-1 * m2);
+    l2b = 1;
+    l2c = c2;
+
+    console.log("Line details:\n");
+    console.log("Line equations:\n", `${l1a}x + ${l1b}y = ${l1c}\n\n`);
+    console.log("Line equations:\n", `${l2a}x + ${l2b}y = ${l2c}\n\n`);
+
+    /*
+    Crammer's Method Summary:-
+    determinant != 0 -> unqiue solution
+    determinant = 0 -> skew, parallel or coincident
+    != slope -> skew
+    = slope and != intercept -> parallel
+    = slope and = intercept -> coincident
+    */
+
+    // calculating the determinant
+    let det;
+    det = calcDet(l1a, l1b, l2a, l2b);
+    console.log("The determinant is: ", `${det}\n\n`);
+
+    // deciding the relationship between the lines
+    if (det === 0) {
+        if (m1 === m2) {
+            if (c1 === c2) {
+                console.log("lines are collinear");
+                drawCollinear();
+            }
+            else {
+                console.log("lines are parallel");
+                drawGraph(line1, line2, false, null);
+            }
+        }
+        else {
+            // btw these don't exist in two dimesions so this is just a check but the program will never reach here
+            console.log("lines are skew");
+            drawGraph(line1, line2, false, null);
+        }
+    }
+    else if (det !== 0) {
+        let Dx, Dy;
+
+        Dx = calcDet(l1c, l1b, l2c, l2b);
+        Dy = calcDet(l1a, l1c, l2a, l2c);
+
+        console.log("The determinant wrt x is: ", `${Dx}\n\n`);
+        console.log("The determinant wrt y is: ", `${Dy}\n\n`);
+
+        let xval, yval;
+
+        xval = Dx / det;
+        yval = Dy / det;
+
+        console.log("Lines intersect at:\n", `${xval} , ${yval}`);
+
+        let result = new Point(xval, yval);
+
+        // drawGraph(line1, line2, true, result);
+        drwaInfinite(line1, line2, true, result);
+    }
 }
 
+// drawing functions for GUI
 function drawGraph(line1, line2, intersect, intersection_point) {
     let output_color = intersect ? 'green' : "blue";
     let output_name = intersect ? 'Intersecting' : "Not Intersecting"
@@ -167,7 +314,85 @@ function drawGraph(line1, line2, intersect, intersection_point) {
     }
     data = [trace1, trace2, trace3, { title: 'Line Intersection' }];
     Plotly.newPlot('graphs-div', data, layout);
+}
 
+function drwaInfinite(line1, line2, intersect, intersection_point) {
+    let output_color1 = intersect ? 'green' : "blue";
+    let output_color2 = intersect ? 'green' : "yellow";
+    let output_name = intersect ? 'Intersecting' : "Not Intersecting";
+
+    // Define points outside the visible range
+    const extensionFactor = 1000; // Adjust this factor as needed
+    const extendedRange = {
+        min: -extensionFactor,
+        max: extensionFactor,
+    };
+
+    // Calculate extended points for Line 1
+    const extendedLine1 = {
+        point1: {
+            x: extendedRange.min,
+            y: line1.point1.y + (extendedRange.min - line1.point1.x) * (line1.point2.y - line1.point1.y) / (line1.point2.x - line1.point1.x),
+        },
+        point2: {
+            x: extendedRange.max,
+            y: line1.point1.y + (extendedRange.max - line1.point1.x) * (line1.point2.y - line1.point1.y) / (line1.point2.x - line1.point1.x),
+        },
+    };
+
+    // Calculate extended points for Line 2
+    const extendedLine2 = {
+        point1: {
+            x: extendedRange.min,
+            y: line2.point1.y + (extendedRange.min - line2.point1.x) * (line2.point2.y - line2.point1.y) / (line2.point2.x - line2.point1.x),
+        },
+        point2: {
+            x: extendedRange.max,
+            y: line2.point1.y + (extendedRange.max - line2.point1.x) * (line2.point2.y - line2.point1.y) / (line2.point2.x - line2.point1.x),
+        },
+    };
+
+    // Trace for Line 1
+    var trace1 = {
+        x: [extendedLine1.point1.x, extendedLine1.point2.x],
+        y: [extendedLine1.point1.y, extendedLine1.point2.y],
+        mode: 'lines',
+        type: 'lines',
+        name: "Line 01",
+        marker: { size: 12, color: output_color1 }
+    };
+
+    // Trace for Line 2
+    var trace2 = {
+        x: [extendedLine2.point1.x, extendedLine2.point2.x],
+        y: [extendedLine2.point1.y, extendedLine2.point2.y],
+        mode: 'lines',
+        type: 'lines',
+        name: "Lines 02",
+        marker: { size: 12, color: output_color2 }
+    };
+
+    // Trace for Intersection Point
+    var trace3 = {};
+    if (intersection_point !== null) {
+        trace3 = {
+            x: [intersection_point.x],
+            y: [intersection_point.y],
+            mode: 'markers',
+            type: 'scatter',
+            name: "Intersection",
+            marker: { size: 13, color: "orange" }
+        };
+    }
+
+    var layout = {
+        title: {
+            text: output_name,
+        }
+    };
+
+    data = [trace1, trace2, trace3, { title: 'Line Intersection' }];
+    Plotly.newPlot('graphs-div', data, layout);
 }
 
 function drawCollinear() {
