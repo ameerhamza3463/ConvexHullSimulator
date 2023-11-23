@@ -1,5 +1,4 @@
 env/
-CHS_App/
-ConvexHullSimulator/__pycache__
+ConvexHullSimulator/__pycache__/
 CHS_App/__pycache__/
 CHS_App/migrations/__pycache__/
