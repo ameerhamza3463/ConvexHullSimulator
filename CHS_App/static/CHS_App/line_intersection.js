@@ -136,80 +136,77 @@ function slope_line_method() {
 
 }
 
+
 // third line intersection algo's helper and main functions
 function calcDet(a, b, c, d) {
     return ((a * d) - (b * c));
 }
 
 
-
-
-
 function cramers_rule() {
-    drwaInfinite();
-    // // getting the line inputs
-    // if (check_input_coordinates()) {
-    //     alert("Please enter valid numeric values for all points.");
-    //     return;
-    // }
-    // let [coord_line1, coord_line2] = get_input_coordinates();
+    // getting the line inputs
+    if (check_input_coordinates()) {
+        alert("Please enter valid numeric values for all points.");
+        return;
+    }
+    let [coord_line1, coord_line2] = get_input_coordinates();
 
-    // // Coefficients of Line 01.
-    // let [l1a, l1b, l1c] = get_line_equation_coefficients(
-    //     coord_line1.point1.x,
-    //     coord_line1.point1.y,
-    //     coord_line1.point2.x,
-    //     coord_line1.point2.y);
+    // Coefficients of Line 01.
+    let [l1a, l1b, l1c] = get_line_equation_coefficients(
+        coord_line1.point1.x,
+        coord_line1.point1.y,
+        coord_line1.point2.x,
+        coord_line1.point2.y);
 
-    // // Coefficients of Line 02.
-    // let [l2a, l2b, l2c] = get_line_equation_coefficients(
-    //     coord_line2.point1.x,
-    //     coord_line2.point1.y,
-    //     coord_line2.point2.x,
-    //     coord_line2.point2.y);
+    // Coefficients of Line 02.
+    let [l2a, l2b, l2c] = get_line_equation_coefficients(
+        coord_line2.point1.x,
+        coord_line2.point1.y,
+        coord_line2.point2.x,
+        coord_line2.point2.y);
 
-    // // Printing both lines to verify equations. 
-    // console.log(`Eq of Line 01: ${l1a}x` + (l1b === 0 ? "" : ` + ${l1b}y`) + ` = ${l1c}`)
-    // console.log(`Eq of Line 02: ${l2a}x` + (l2b === 0 ? "" : ` + ${l2b}y`) + ` = ${l2c}`)
+    // Printing both lines to verify equations. 
+    console.log(`Eq of Line 01: ${l1a}x` + (l1b === 0 ? "" : ` + ${l1b}y`) + ` = ${l1c}`)
+    console.log(`Eq of Line 02: ${l2a}x` + (l2b === 0 ? "" : ` + ${l2b}y`) + ` = ${l2c}`)
 
 
-    // /*
-    //     Crammer's Method Summary:-
-    //     determinant != 0 -> Unqiue solution
-    //     determinant = 0 -> Skew, parallel or coincident. In simple words, either there is no solution or there are infinite solutions.
-    //     != slope -> skew
-    //     = slope and != intercept -> parallel
-    //     = slope and = intercept -> coincident
-    // */
+    /*
+        Crammer's Method Summary:-
+        determinant != 0 -> Unqiue solution
+        determinant = 0 -> Skew, parallel or coincident. In simple words, either there is no solution or there are infinite solutions.
+        != slope -> skew
+        = slope and != intercept -> parallel
+        = slope and = intercept -> coincident
+    */
 
-    // // Calculating the determinant
-    // let det;
-    // det = calcDet(l1a, l1b, l2a, l2b);
-    // console.log("The determinant is: ", `${det}`);
+    // Calculating the determinant
+    let det;
+    det = calcDet(l1a, l1b, l2a, l2b);
+    console.log("The determinant is: ", `${det}`);
 
-    // // Deciding the relationship between the lines
-    // if (det === 0) {
-    //     alert("Cramer's Rule is not applicable on the given line equations. As the determinant (D) is 0, the system has either no solution or infinite solutions.");
-    //     drwaInfinite();
-    //     return;
-    // }
-    // else if (det !== 0) {
-    //     let Dx, Dy;
+    // Deciding the relationship between the lines
+    if (det === 0) {
+        alert("Cramer's Rule is not applicable on the given line equations. As the determinant (D) is 0, the system has either no solution or infinite solutions.");
+        drwaNotApplicable();
+        return;
+    }
+    else if (det !== 0) {
+        let Dx, Dy;
 
-    //     Dx = calcDet(l1c, l1b, l2c, l2b);
-    //     Dy = calcDet(l1a, l1c, l2a, l2c);
+        Dx = calcDet(l1c, l1b, l2c, l2b);
+        Dy = calcDet(l1a, l1c, l2a, l2c);
 
-    //     let xval, yval;
+        let xval, yval;
 
-    //     xval = Dx / det;
-    //     yval = Dy / det;
+        xval = Dx / det;
+        yval = Dy / det;
 
-    //     console.log("Lines intersect at:\n", `${xval} , ${yval}`);
+        console.log("Lines intersect at:\n", `${xval} , ${yval}`);
 
-    //     let result = new Point(xval, yval);
+        let result = new Point(xval, yval);
 
-    //     drawInfiniteLineGraph(coord_line1, coord_line2, true, result, "Cramer's Rule - ");
-    // }
+        drawInfiniteLineGraph(coord_line1, coord_line2, true, result, "Cramer's Rule - ");
+    }
 }
 
 /* 
@@ -474,7 +471,7 @@ function createIntersectionPointTrace(intersection_point) {
 }
 
 // Print No Solution or Infinite Solution as graph.
-function drwaInfinite() {
+function drwaNotApplicable() {
     let output_color = "orange";
     GRAPH = document.getElementById('graphs-div');
 
@@ -584,8 +581,6 @@ function drwaInfinite() {
         name: "E",
         marker: { size: 12, color: output_color }
     }
-
-
 
     data = [n, o, t, a1, p1, p2, l1, i, c, a2, b, l2, e, { title: 'Not Applicable' }];
     Plotly.newPlot('graphs-div', data);
