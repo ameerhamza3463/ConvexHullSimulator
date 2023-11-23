@@ -144,7 +144,7 @@ function addRandomCoordiantes() {
         alert("Need at least 3 number of random coordinates (。_。)");
         return;
     }
-    else if (numberOfRandomPoints > 50) {
+    else if (numberOfRandomPoints > 1001) {
         alert("Maximum 50 number of random coordinates plz ( •̀ ω •́ )y");
         return;
     }
