@@ -149,7 +149,7 @@ function slope(p1x, p1y, p2x, p2y) {
     return (p2y - p1y) / (p2x - p1x);
 }
 
-function line_intersection_03() {
+function cramers_rule() {
     // getting the line inputs
     console.log('line_intersection_03');
 

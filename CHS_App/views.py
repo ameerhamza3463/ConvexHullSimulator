@@ -70,8 +70,8 @@ def line_intersection(request, num):
         algorithm = "slope_line_method"
         colorScheme = "dark"
     elif num == 3:
-        algorithmTitle = "line_intersection_03"
-        algorithm = "line_intersection_03"
+        algorithmTitle = "Cramer's Rule"
+        algorithm = "cramers_rule"
         colorScheme = "success"
     else:
         return redirect("CHS_App:page_not_found_404")
