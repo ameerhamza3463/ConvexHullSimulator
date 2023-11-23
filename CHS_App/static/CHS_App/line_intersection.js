@@ -107,8 +107,6 @@ function ccw() {
         return;
     }
     let [line1, line2] = get_input_coordinates();
-    console.log(line1);
-    console.log(line2);
 
     let test1 = checkCCW(line1.point1, line1.point2, line2.point1) *
         checkCCW(line1.point1, line1.point2, line2.point2);
@@ -133,7 +131,28 @@ function ccw() {
 
 // second line intersection algo's helper and main functions
 function slope_line_method() {
+    if (check_input_coordinates()) {
+        alert("Please enter valid numeric values for all points.");
+        return;
+    }
+    let [coord_line1, coord_line2] = get_input_coordinates();
+    let x = [coord_line1.point1.x, coord_line1.point2.x];
+    let y = [coord_line1.point1.y, coord_line1.point2.y];
+    let crossings = 0;
 
+    let my_slope = slope(coord_line1.point2.y - coord_line1.point1.y) / (coord_line1.point2.x - coord_line1.point1.x);
+    let cond1 = (coord_line1.point1.x <= coord_line2.point1.x) && (coord_line2.point1.x < coord_line1.point2.x);
+    let cond2 = (coord_line1.point2.x <= coord_line2.point1.x) && (coord_line2.point1.x < coord_line1.point1.x);
+    let above = (coord_line2.point1.y < my_slope * (coord_line2.point1.x - coord_line1.point1.x) + coord_line1.point1.y);
+    if ((cond1 || cond2) && above) crossings++;
+    my_slope = slope(coord_line1.point2.y - coord_line1.point1.y) / (coord_line1.point2.x - coord_line1.point1.x);
+    cond1 = (coord_line1.point1.x <= coord_line2.point2.x) && (coord_line2.point2.x < coord_line1.point2.x);
+    cond2 = (coord_line1.point2.x <= coord_line2.point2.x) && (coord_line2.point2.x < coord_line1.point1.x);
+    above = (coord_line2.point2.y < my_slope * (coord_line2.point2.x - coord_line1.point1.x) + coord_line1.point1.y);
+    if ((cond1 || cond2) && above) crossings++;
+    let output = (crossings % 2 != 0);
+    console.log(output);
+    drawGraph(coord_line1, coord_line2, output, null, "Slope Line Method - ");
 }
 
 
