@@ -61,6 +61,8 @@ def algorithm(request, algorithm):
 def line_intersection(request, num):
     colorScheme = "None"
     algorithm = "None"
+    research_paper_reference = ""
+
     if num == 1:
         algorithmTitle = "CCW"
         algorithm = "ccw"
@@ -73,6 +75,7 @@ def line_intersection(request, num):
         algorithmTitle = "Cramer's Rule"
         algorithm = "cramers_rule"
         colorScheme = "success"
+        research_paper_reference = "https://www.researchgate.net/publication/255981900_A_comparison_between_Cramer's_Rule_and_a_proposed_2_by_2_Cramer-Elimination_Method_to_solve_systems_of_three_or_more_linear_equations"
     else:
         return redirect("CHS_App:page_not_found_404")
     return render(
@@ -82,6 +85,7 @@ def line_intersection(request, num):
             "algorithm": algorithm,
             "algorithmTitle": algorithmTitle,
             "colorScheme": colorScheme,
+            "research_paper_reference": research_paper_reference,
         },
     )
 

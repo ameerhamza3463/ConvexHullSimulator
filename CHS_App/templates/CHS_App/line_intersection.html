@@ -15,6 +15,9 @@
   <div class="container-fluid d-flex justify-content-between flex-wrap my-3">
     <div class="fs-4 my-3">
       Algorithm Name: <span class="text-{{ colorScheme }}">{{ algorithmTitle }}</span>
+      {% if research_paper_reference %}
+        <a href="{{ research_paper_reference }}" class="link-body-emphasis link-offset-1 link-underline-opacity-25 link-underline-opacity-75-hover"><span style="font-size: 0.8rem;">Read More</span></a>
+      {% endif %}
     </div>
     <div class="my-3 col-lg-4 col-12 justify-content-lg-evenly justify-content-start d-flex">
       <a href="#graphs-div" class="mx-2"><button type="button" class="btn btn-{{ colorScheme }}" onclick="{{ algorithm }}()">Run Algorithm 🚀</button></a>
