@@ -21,8 +21,12 @@ function check_input_coordinates() {
     let l1p2y = document.querySelector("#l1p2y").value;
     let l2p1x = document.querySelector("#l2p1x").value;
     let l2p1y = document.querySelector("#l2p1y").value;
-    let l2p2x = document.querySelector("#l2p2x").value;
-    let l2p2y = document.querySelector("#l2p2y").value;
+    let l2p2x = 0;
+    let l2p2y = 0;
+    if (document.querySelector("#l2p2x") != undefined) {
+        document.querySelector("#l2p2x").value = parseInt(l2p2x);
+        document.querySelector("#l2p2y").value = parseInt(l2p2y);
+    }
 
     // Check for missing values or non-numeric input
     if (l1p1x === '' || l1p1y === '' || l1p2x === '' || l1p2y === '' ||
@@ -40,7 +44,7 @@ function get_input_coordinates() {
     let l1p1 = new Point(parseFloat(document.querySelector("#l1p1x").value), parseFloat(document.querySelector("#l1p1y").value));
     let l1p2 = new Point(parseFloat(document.querySelector("#l1p2x").value), parseFloat(document.querySelector("#l1p2y").value));
     let l2p1 = new Point(parseFloat(document.querySelector("#l2p1x").value), parseFloat(document.querySelector("#l2p1y").value));
-    let l2p2 = new Point(parseFloat(document.querySelector("#l2p2x").value), parseFloat(document.querySelector("#l2p2y").value));
+    let l2p2 = new Point(parseFloat(document.querySelector("#l2p2x") == undefined ? 0 : document.querySelector("#l2p2x").value), parseFloat(document.querySelector("#l2p2y") == undefined ? 0 : document.querySelector("#l2p2y").value));
 
     return [new Line(l1p1, l1p2), new Line(l2p1, l2p2)];
 }
@@ -69,8 +73,10 @@ function random_lines() {
     document.querySelector("#l1p2y").value = parseInt(l1p2y);
     document.querySelector("#l2p1x").value = parseInt(l2p1x);
     document.querySelector("#l2p1y").value = parseInt(l2p1y);
-    document.querySelector("#l2p2x").value = parseInt(l2p2x);
-    document.querySelector("#l2p2y").value = parseInt(l2p2y);
+    if (document.querySelector("#l2p2x") != undefined) {
+        document.querySelector("#l2p2x").value = parseInt(l2p2x);
+        document.querySelector("#l2p2y").value = parseInt(l2p2y);
+    }
 
 }
 
