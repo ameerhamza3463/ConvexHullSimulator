@@ -218,3 +218,4 @@ function print_convex_hull(selectedx, selectedy) {
     // Scroll to the convex hull div
     convex_hull_div.scrollIntoView({ behavior: 'smooth' });
 }
+  

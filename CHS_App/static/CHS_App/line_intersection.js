@@ -135,24 +135,41 @@ function slope_line_method() {
         alert("Please enter valid numeric values for all points.");
         return;
     }
+
     let [coord_line1, coord_line2] = get_input_coordinates();
+
     let x = [coord_line1.point1.x, coord_line1.point2.x];
     let y = [coord_line1.point1.y, coord_line1.point2.y];
+
+    let xo = coord_line2.point1.x;
+    let yo = coord_line2.point1.y;
+
     let crossings = 0;
 
-    let my_slope = slope(coord_line1.point2.y - coord_line1.point1.y) / (coord_line1.point2.x - coord_line1.point1.x);
-    let cond1 = (coord_line1.point1.x <= coord_line2.point1.x) && (coord_line2.point1.x < coord_line1.point2.x);
-    let cond2 = (coord_line1.point2.x <= coord_line2.point1.x) && (coord_line2.point1.x < coord_line1.point1.x);
-    let above = (coord_line2.point1.y < my_slope * (coord_line2.point1.x - coord_line1.point1.x) + coord_line1.point1.y);
-    if ((cond1 || cond2) && above) crossings++;
-    my_slope = slope(coord_line1.point2.y - coord_line1.point1.y) / (coord_line1.point2.x - coord_line1.point1.x);
-    cond1 = (coord_line1.point1.x <= coord_line2.point2.x) && (coord_line2.point2.x < coord_line1.point2.x);
-    cond2 = (coord_line1.point2.x <= coord_line2.point2.x) && (coord_line2.point2.x < coord_line1.point1.x);
-    above = (coord_line2.point2.y < my_slope * (coord_line2.point2.x - coord_line1.point1.x) + coord_line1.point1.y);
-    if ((cond1 || cond2) && above) crossings++;
-    let output = (crossings % 2 != 0);
-    console.log(output);
-    drawGraph(coord_line1, coord_line2, output, null, "Slope Line Method - ");
+    let m = slope(x[0], y[0], x[1], y[1]);
+
+    let cond1 = (x[0] <= xo) && (xo < x[1]);
+    let cond2 = (x[1] <= xo) && (xo < x[0]);
+    let expectedy = (m * (xo - x[0]) + y[0]);
+    let above = (yo < expectedy);
+    let output = "";
+    if ((cond1 || cond2) && above) {
+        alert("The point is inside the line.");
+        output = "The point is inside the line."
+    }
+    else if (Math.abs(expectedy - yo) < 1e-6) {
+        alert("The point lies on the line.");
+        output = "The point lies on the line."
+    }
+    else if ((cond1 || cond2) && !above) {
+        alert("The point is outside the line.");
+        output = "The point is outside the line."
+    }
+    else {
+        alert("The point is around the line.");
+        output = "The point is around the line."
+    }
+    drawGraphForSlope(coord_line1, coord_line2, "Slope Line Method", output);
 }
 
 
@@ -603,4 +620,31 @@ function drwaNotApplicable() {
 
     data = [n, o, t, a1, p1, p2, l1, i, c, a2, b, l2, e, { title: 'Not Applicable' }];
     Plotly.newPlot('graphs-div', data);
+}
+function drawGraphForSlope(line1, line2, method_name, output) {
+    GRAPH = document.getElementById('graphs-div');
+    var trace1 = {
+        x: [line1.point1.x, line1.point2.x],
+        y: [line1.point1.y, line1.point2.y],
+        mode: 'lines+markers',
+        type: 'lines',
+        name: "Line 01",
+        marker: { size: 12 }
+    }
+    var trace2 = {
+        x: [line2.point1.x],
+        y: [line2.point1.y],
+        mode: 'lines+markers',
+        type: 'lines',
+        name: "Point",
+        marker: { size: 12 }
+    }
+
+    var layout = {
+        title: {
+            text: method_name + " - " + output,
+        }
+    }
+    data = [trace1, trace2, { title: 'Line Intersection' }];
+    Plotly.newPlot('graphs-div', data, layout);
 }
